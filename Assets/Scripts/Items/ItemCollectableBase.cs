@@ -18,7 +18,7 @@ public class ItemCollectableBase : MonoBehaviour
         //if (myParticleSystem != null) myParticleSystem.transform.SetParent(null);
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter(Collider collision)
     {
         if (collision.transform.CompareTag(compareTag) && !once)
         {
@@ -29,7 +29,7 @@ public class ItemCollectableBase : MonoBehaviour
 
     protected virtual void Collect()
     {
-        if(graphicItem != null)graphicItem.SetActive(false);
+        if (graphicItem != null)graphicItem.SetActive(false);
         Invoke(nameof(HideObject), timeToHide);
         OnCollect();
     }
@@ -41,7 +41,7 @@ public class ItemCollectableBase : MonoBehaviour
 
     protected virtual void OnCollect()
     {
-        if(myParticleSystem != null)
+        if (myParticleSystem != null)
         {
             myParticleSystem.Play();
         }
