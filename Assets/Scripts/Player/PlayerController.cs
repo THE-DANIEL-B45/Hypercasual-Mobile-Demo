@@ -1,6 +1,8 @@
+using DG.Tweening;
 using Ebac.Core.Singleton;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class PlayerController : Singleton<PlayerController>
@@ -15,7 +17,12 @@ public class PlayerController : Singleton<PlayerController>
     public string tagToCheck = "Enemy";
     public string tagToCheckEndLine = "EndLine";
 
+    [Header("Text Mesh Pro")]
+    public TextMeshPro uiTextPowerUp;
+
     public GameObject endScreen;
+
+    public bool invencible = false;
 
     //privates
     private bool _canRun;
@@ -44,7 +51,7 @@ public class PlayerController : Singleton<PlayerController>
     {
         if (collision.transform.tag == tagToCheck)
         {
-            EndGame();
+            if (!invencible) EndGame();
         }
     }
 
@@ -52,7 +59,7 @@ public class PlayerController : Singleton<PlayerController>
     {
         if(other.transform.tag == tagToCheckEndLine)
         {
-            EndGame();
+            if (!invencible) EndGame();
         }
     }
 
@@ -71,7 +78,7 @@ public class PlayerController : Singleton<PlayerController>
 
     public void SetPowerUpText(string s)
     {
-        //uiTextPowerUp.text = s;
+        uiTextPowerUp.text = s;
     }
 
     public void PowerUpSpeedUp(float f)
@@ -82,6 +89,21 @@ public class PlayerController : Singleton<PlayerController>
     public void ResetSpeed()
     {
         _currentSpeed = speed;
+    }
+
+    public void SetInvencible(bool b = true)
+    {
+        invencible = b;
+    }
+
+    public void ChangeHeight(float amount, float duration, float animationDuration, Ease ease)
+    {
+        transform.DOMoveY(_startPosition.y + amount, animationDuration).SetEase(ease);
+    }
+
+    public void ResetHeight(float animationDuration)
+    {
+        transform.DOMoveY(_startPosition.y, animationDuration);
     }
 
     #endregion
