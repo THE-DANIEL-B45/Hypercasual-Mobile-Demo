@@ -80,6 +80,8 @@ public class LevelManager : MonoBehaviour
         {
             CreateLevelPiece(_currentLevelSetup.levelPiecesEnd);
         }
+
+        ColorManager.Instance.ChangeColorByType(_currentLevelSetup.artType);
     }
 
     private void CreateLevelPiece(List<LevelPieceBase> list)
