@@ -23,6 +23,9 @@ public class PlayerController : Singleton<PlayerController>
     [Header("Text Mesh Pro")]
     public TextMeshPro uiTextPowerUp;
 
+    [Header("Animation")]
+    public AnimatorManager animatorManager;
+
     public GameObject endScreen;
 
     public bool invencible = false;
@@ -54,7 +57,11 @@ public class PlayerController : Singleton<PlayerController>
     {
         if (collision.transform.tag == tagToCheck)
         {
-            if (!invencible) EndGame();
+            if (!invencible) 
+            {
+                MoveBack();
+                EndGame(AnimatorManager.AnimationType.DEAD);
+            }
         }
     }
 
@@ -66,15 +73,22 @@ public class PlayerController : Singleton<PlayerController>
         }
     }
 
-    private void EndGame()
+    private void MoveBack()
+    {
+        transform.DOMoveZ(-1f, 0.3f).SetRelative();
+    }
+
+    private void EndGame(AnimatorManager.AnimationType animationType = AnimatorManager.AnimationType.IDLE)
     {
         _canRun = false;
         endScreen.SetActive(true);
+        animatorManager.Play(animationType);
     }
 
     public void StartToRun()
     {
         _canRun = true;
+        animatorManager.Play(AnimatorManager.AnimationType.RUN);
     }
 
     #region PowerUps
