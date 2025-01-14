@@ -26,6 +26,12 @@ public class PlayerController : Singleton<PlayerController>
     [Header("Animation")]
     public AnimatorManager animatorManager;
 
+    [Header("Particle System")]
+    public ParticleSystem vfxDeath;
+
+    [Header("Limits")]
+    public Vector2 limitVector = new Vector2(-4, 4);
+
     public GameObject endScreen;
 
     public bool invencible = false;
@@ -57,6 +63,9 @@ public class PlayerController : Singleton<PlayerController>
 
         _pos = new Vector3(target.position.x, transform.position.y, transform.position.z);
 
+        if(_pos.x < limitVector.x) _pos.x = limitVector.x;
+        else if(_pos.x > limitVector.y) _pos.x = limitVector.y;
+
         transform.position = Vector3.Lerp(transform.position, _pos, lerpSpeed * Time.deltaTime);
 
         transform.Translate(transform.forward * _currentSpeed * Time.deltaTime);
@@ -78,7 +87,7 @@ public class PlayerController : Singleton<PlayerController>
     {
         if(other.transform.tag == tagToCheckEndLine)
         {
-            if (!invencible) EndGame();
+            EndGame();
         }
     }
 
@@ -92,6 +101,7 @@ public class PlayerController : Singleton<PlayerController>
         _canRun = false;
         endScreen.SetActive(true);
         animatorManager.Play(animationType);
+        if(vfxDeath != null && animationType == AnimatorManager.AnimationType.DEAD)vfxDeath.Play();
     }
 
     public void StartToRun()
