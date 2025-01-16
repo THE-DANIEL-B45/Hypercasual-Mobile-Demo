@@ -7,17 +7,24 @@ namespace Screens
 {
     public class ScreenManager : Singleton<ScreenManager>
     {
+
         public List<ScreenBase> screenBases;
 
         public ScreenType startScreen = ScreenType.Panel;
 
         private ScreenBase _screenBase;
 
+        private ScreenBase randScreenBase;
+
         private void Start()
         {
+            randScreenBase = screenBases.GetRandom();
+            //transform.Scale(2);
             HideAll();
             ShowByType(startScreen);
         }
+
+        
 
         public void ShowByType(ScreenType screenType)
         {
